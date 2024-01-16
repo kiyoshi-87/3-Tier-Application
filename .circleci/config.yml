@@ -1,0 +1,43 @@
+version: 2.1
+
+jobs:
+  build-frontend:
+    docker:
+      - image: circleci/node:14
+
+    working_directory: ~/frontend
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install Frontend Dependencies
+          command: npm install
+
+      - run:
+          name: Build Frontend
+          command: npm run build
+
+  build-backend:
+    docker:
+      - image: node:14
+
+    working_directory: ~/backend
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install Backend Dependencies
+          command: npm install
+
+      - run:
+          name: Run Backend Tests
+          command: npm test
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build-frontend
+      - build-backend
