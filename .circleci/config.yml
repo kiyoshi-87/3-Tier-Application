@@ -5,23 +5,17 @@ jobs:
     docker:
       - image: circleci/node:14
 
-    working_directory: ~/3-Tier-Application/frontend
-
     steps:
       - checkout
 
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "3-Tier-Application/frontend/package.json" }}
+      - run: 
+          name: Change directories
+          command: cd frontend
 
       - run:
           name: Install Frontend Dependencies
           command: npm install
           
-      - save_cache:
-          paths:
-            - 3-Tier-Application/frontend/node_modules
-          key: v1-dependencies-{{ checksum "3-Tier-Application/frontend/package.json" }}
 
       - run:
           name: Build Frontend
@@ -31,23 +25,18 @@ jobs:
     docker:
       - image: node:14
 
-    working_directory: ~/3-Tier-Application/backend
 
     steps:
       - checkout
 
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "3-Tier-Application/backend/package.json" }}
+      - run: 
+          name: Change directories
+          command: cd backend
 
       - run:
           name: Install Backend Dependencies
           command: npm install
 
-      - save_cache:
-          paths:
-            - 3-Tier-Application/backend/node_modules
-          key: v1-dependencies-{{ checksum "3-Tier-Application/backend/package.json" }}
 
       - run:
           name: Run Backend Tests
